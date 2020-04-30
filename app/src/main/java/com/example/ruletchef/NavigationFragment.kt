@@ -1,15 +1,11 @@
 package com.example.ruletchef
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import com.example.ruletchef.repository.Repository
-import com.example.ruletchef.viewmodels.NavigationViewModel
 import kotlinx.android.synthetic.main.chf_navigation_fragment.view.*
 
 

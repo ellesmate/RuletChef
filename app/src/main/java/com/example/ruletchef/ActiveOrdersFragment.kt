@@ -9,20 +9,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ruletchef.adapters.OrderCardRecyclerViewAdapter
-import com.example.ruletchef.viewmodels.NavigationViewModel
+import com.example.ruletchef.viewmodels.ActiveOrdersViewModel
 import kotlinx.android.synthetic.main.chf_active_orders_fragment.view.*
 
 
 class ActiveOrdersFragment : Fragment() {
 
-    lateinit var viewModel : NavigationViewModel
+    lateinit var viewModel : ActiveOrdersViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel = ActiveOrdersViewModel()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = NavigationViewModel()
 
         val view = inflater.inflate(R.layout.chf_active_orders_fragment, container, false)
 
