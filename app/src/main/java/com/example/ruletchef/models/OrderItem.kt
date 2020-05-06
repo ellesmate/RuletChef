@@ -22,17 +22,29 @@ data class OrderItem (
 
     @Expose
     @SerializedName("wishes")
-    val wishes: String
+    val wishes: String,
+
+    @Expose
+    @SerializedName("status")
+    var state: State,
+
+    @Expose
+    @SerializedName("cook")
+    var cook: Int?
 ) {
     lateinit var image: String
     lateinit var description: String
     lateinit var type: String
-    val state: State  = State.EMPTY
 }
 
 
 enum class State {
-    EMPTY,
-    PROCCESSING,
+    @SerializedName("NEW")
+    NEW,
+    @SerializedName("COO")
+    COOKING,
+    @SerializedName("DEL")
+    DELIVERING,
+    @SerializedName("DON")
     DONE
 }

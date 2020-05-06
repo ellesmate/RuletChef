@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ruletchef.R
 import com.example.ruletchef.models.Order
 import com.example.ruletchef.viewhoders.OrderCardViewHolder
+import com.example.ruletchef.viewmodels.NavigationViewModel
 
-class OrderCardRecyclerViewAdapter(private val orderList: List<Order>) : RecyclerView.Adapter<OrderCardViewHolder>() {
+class OrderCardRecyclerViewAdapter(private val orderList: List<Order>, private val viewModel: NavigationViewModel) : RecyclerView.Adapter<OrderCardViewHolder>() {
     override fun getItemCount(): Int {
         return orderList.size
     }
@@ -24,7 +25,7 @@ class OrderCardRecyclerViewAdapter(private val orderList: List<Order>) : Recycle
     override fun onBindViewHolder(holder: OrderCardViewHolder, position: Int) {
         if (position < orderList.size) {
             val order = orderList[position]
-            val adapter = OrderItemRecyclerViewAdapter(order.items)
+            val adapter = OrderItemRecyclerViewAdapter(order.items, viewModel)
 //            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 //            holder.orderRecyclerView.layoutManager = layoutManager
             holder.orderRecyclerView.adapter = adapter

@@ -45,9 +45,7 @@ class LoginFragment : Fragment() {
                 viewModel.auth(email.toString(), password.toString()).observe(this, Observer {
 
                     if (it) {
-                        Repository.fetchMenuItem().observe(this, Observer {
-                            (activity as NavigationHost).navigateTo(NavigationFragment(), false)
-                        })
+                        (activity as NavigationHost).navigateTo(NavigationFragment(), false)
                     } else {
                         Snackbar.make(view, "Auth Error. Please try again.", Snackbar.LENGTH_SHORT)
                             .show()

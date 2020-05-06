@@ -10,7 +10,6 @@ class MainActivity : AppCompatActivity(), NavigationHost {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chf_main_activity)
 
-
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()

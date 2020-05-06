@@ -6,19 +6,22 @@ import java.util.*
 
 
 data class Order (
-    @Expose
+//    @Expose(serialize = true, deserialize = true)
     @SerializedName("id")
     val id: Int,
 
-    @Expose
+//    @Expose
+//    @Expose(serialize = true, deserialize = true)
     @SerializedName("entity")
     val entity: Int,
 
-    @Expose
+//    @Expose
+//    @Expose(serialize = true, deserialize = true)
     @SerializedName("time")
     val time: Date,
 
-    @Expose
+//    @Expose
+//    @Expose(serialize = true, deserialize = true)
     @SerializedName("take_out")
     val takeOut: Boolean,
 
@@ -26,7 +29,8 @@ data class Order (
 //    @SerializedName("orderitem_set")
 //    val metaItems: List<MetaItem>,
 
-    @Expose
+//    @Expose
+//    @Expose(serialize = true, deserialize = true)
     @SerializedName("orderitem_set")
     val items: List<OrderItem>
 )

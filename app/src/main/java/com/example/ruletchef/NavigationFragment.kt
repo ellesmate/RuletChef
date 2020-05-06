@@ -6,14 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.ruletchef.api.RetrofitBuilder
+import com.example.ruletchef.models.Order
+import com.example.ruletchef.viewmodels.NavigationViewModel
 import kotlinx.android.synthetic.main.chf_navigation_fragment.view.*
 
 
 class NavigationFragment : Fragment() {
 
+    lateinit var viewModel: NavigationViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel = NavigationViewModel()
+
     }
+
+    var currentOrderFragment: CurrentOrderFragment? = null
+    var activeOrdersFragment: ActiveOrdersFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,17 +33,24 @@ class NavigationFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.chf_navigation_fragment, container, false)
 
-        (activity as AppCompatActivity).supportFragmentManager.beginTransaction()
-            .replace(R.id.navigation_container, CurrentOrderFragment()).commit()
+//        (activity as AppCompatActivity).supportFragmentManager.beginTransaction()
+//            .replace(R.id.navigation_container, CurrentOrderFragment()).commit()
 
         view.navigation.setOnNavigationItemSelectedListener {
             var selectedFragment: Fragment? = null
             when(it.itemId) {
                 R.id.action_search -> {
-                    selectedFragment = CurrentOrderFragment()
+                    if (currentOrderFragment == null) {
+                        currentOrderFragment = CurrentOrderFragment(viewModel)
+                    }
+                    selectedFragment = currentOrderFragment
+
                 }
                 R.id.action_settings -> {
-                    selectedFragment = ActiveOrdersFragment()
+                    if (activeOrdersFragment == null) {
+                        activeOrdersFragment = ActiveOrdersFragment(viewModel)
+                    }
+                    selectedFragment = activeOrdersFragment
                 }
             }
 
@@ -44,6 +62,8 @@ class NavigationFragment : Fragment() {
             }
             false
         }
+
+        view.navigation.selectedItemId = R.id.action_search
 
 
 

@@ -3,15 +3,8 @@ package com.example.ruletchef.repository
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.ruletchef.api.RetrofitBuilder
+import com.example.ruletchef.livedata.OrderLiveData
 import com.example.ruletchef.models.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.internal.notify
-import okhttp3.internal.notifyAll
 import retrofit2.Callback
 import retrofit2.Call
 import retrofit2.Response
@@ -21,6 +14,7 @@ object Repository {
     private const val TAG: String = "RequestRepository"
 
     var token: MutableLiveData<Token?> = MutableLiveData()
+    val me: Int = 1
 
     fun auth(email: String, password: String) : LiveData<Boolean> {
         return object: LiveData<Boolean>() {
@@ -49,21 +43,19 @@ object Repository {
                     }
 
                     override fun onFailure(call: Call<Token>, t: Throwable) {
-                        Log.d(TAG, "Auth onFailure method")
+                        Log.d(TAG, "Auth onFailure method", t)
                     }
                 })
             }
         }
     }
 
-//    var isAuthorized: MutableLiveData<Boolean> = MutableLiveData()
 
     fun handleResponseCode(code: Int) {
         when(code) {
             401 -> {
                 Log.d(TAG, "Unauthorized")
                 token.postValue(null)
-//                isAuthorized.postValue(false)
             }
             403 -> {
                 Log.d(TAG, "Forbidden")
@@ -71,109 +63,123 @@ object Repository {
         }
     }
 
-    fun fetchOrders() : LiveData<List<Order>> {
+    fun fetchOrders(menuItemMap: Map<Int, MenuItem>) : LiveData<MutableList<Order>> {
+//        return OrderLiveData(menuItemMap)
+        return object : MutableLiveData<MutableList<Order>>() {
+            var isTouchable: Boolean = true
 
-        return object: LiveData<List<Order>>() {
+            fun fetch() {
+                Log.d("NavigationFragment", "Start Load")
+                Log.d("NavigationFragment", this.hashCode().toString())
+                RetrofitBuilder.apiService.getOrders(1, Repository.token.value?.toString())
+                    .enqueue(object: Callback<MutableList<Order>> {
+                        override fun onResponse(
+                            call: Call<MutableList<Order>>,
+                            response: Response<MutableList<Order>>
+                        ) {
+                            if (response.isSuccessful) {
+                                val orders = response.body()
+
+                                orders?.forEach {order ->
+                                    println(order)
+
+                                    order.items.forEach { item ->
+                                        val menuItem = menuItemMap[item.menuItemId]
+                                        item.apply {
+                                            image = menuItem!!.image
+                                            description = menuItem.description
+                                            type = menuItem.type
+                                        }
+                                    }
+                                }
+                                isTouchable = false
+                                value = orders
+                            } else {
+                                handleResponseCode(response.code())
+                            }
+                        }
+                        override fun onFailure(call: Call<MutableList<Order>>, t: Throwable) {
+                            Log.d(TAG, "Fetch order error", t)
+                        }
+                    })
+            }
+
+
+//            override fun pushBack(order: Order) {
+//                order.items.forEach { item ->
+//                    val menuItem = menuItemMap[item.menuItemId]
+//                    item.apply {
+//                        image = menuItem!!.image
+//                        description = menuItem.description
+//                        type = menuItem.type
+//                    }
+//                }
+//
+//                if (value == null) {
+//                    value = mutableListOf(order)
+//                } else {
+//                    value?.add(order)
+//                    value = value
+//                }
+//
+//            }
 
             override fun onActive() {
                 super.onActive()
-                Log.d("NavigationFragment", "Start Load")
 
+                if (value == null) {
+                    isTouchable = true
+                }
 
-
-                CoroutineScope(IO).launch {
-                    try {
-                        val response = RetrofitBuilder.apiService.getOrders(1, token.value?.toString()).execute()
-
-                        if (response.isSuccessful) {
-
-                            val orders = response.body()
-
-
-//                            val observer = Observer<Map<Int, MenuItem>> {menuItemMap ->
-//                                orders?.forEach {order ->
-//
-//                                    order.items.forEach { item ->
-//                                        val menuItem = menuItemMap[item.menuItemId]
-//
-//                                        item.apply {
-//                                            image = menuItem!!.image
-//                                            description = menuItem.description
-//                                            type = menuItem.type
-//                                            wishes = menuItem.wishes
-//                                            state = menuItem.state
-//                                        }
-//                                    }
-//
-//                                }
-//
-//
-////                                menu.removeObserver()
-//                                value = orders
-//                            }
-
-                            val menuItemMap = menu.value ?: throw Exception("menuItemMap is empty")
-
-                            orders?.forEach {order ->
-
-                                order.items.forEach { item ->
-                                    val menuItem = menuItemMap[item.menuItemId]
-
-                                    item.apply {
-                                        image = menuItem!!.image
-                                        description = menuItem.description
-                                        type = menuItem.type
-                                    }
-                                }
-
-                            }
-
-
-                            withContext(Main){
-                                value = orders
-                            }
-
-                        } else {
-                            handleResponseCode(response.code())
-                        }
-                    } catch(e: Exception) {
-                        Log.d("NavigationFragment", e.message)
-
-                    }
+                if (isTouchable) {
+                    fetch()
+                } else {
+                    value = value
                 }
 
             }
         }
     }
 
-    val menu: MutableLiveData<Map<Int, MenuItem>> = object: MutableLiveData<Map<Int, MenuItem>>() {}
 
-    fun fetchMenuItem(): LiveData<Map<Int, MenuItem>> {
-        return object: LiveData<Map<Int, MenuItem>>() {
+    fun fetchMenuItems(): MutableLiveData<Map<Int, MenuItem>> {
+        return object: MutableLiveData<Map<Int, MenuItem>>() {
+            fun fetch() {
+                RetrofitBuilder.apiService.getMenuItems(1, token.value?.toString())
+                    .enqueue(object: Callback< List<MenuItem>> {
+                        override fun onResponse(
+                            call: Call<List<MenuItem>>,
+                            response: Response<List<MenuItem>>
+                        ) {
+                            if (response.isSuccessful) {
+                                val map = mutableMapOf<Int, MenuItem>()
+                                response.body()?.forEach {
+                                    map[it.id] = it
+                                }
+//                            menu.postValue(map)
+                                isTouchable = false
+                                value = map
+                            } else {
+                                handleResponseCode(response.code())
+                            }
+                        }
+
+                        override fun onFailure(call: Call<List<MenuItem>>, t: Throwable) {
+                            Log.e(TAG, "MenuItem retrieve error.", t)
+                        }
+                    })
+            }
+            var isTouchable = true
+
             override fun onActive() {
                 super.onActive()
+                if (value == null) {
+                    isTouchable = true
+                }
 
-                RetrofitBuilder.apiService.getMenuItems(1, token.value?.toString()).enqueue(object: Callback< List<MenuItem>> {
-                    override fun onResponse(
-                        call: Call<List<MenuItem>>,
-                        response: Response<List<MenuItem>>
-                    ) {
-                        if (response.isSuccessful) {
-                            val map = mutableMapOf<Int, MenuItem>()
-                            response.body()?.forEach {
-                                map[it.id] = it
-                            }
-                            menu.postValue(map)
-                            value = map
-                        } else {
-                            handleResponseCode(response.code())
-                        }
-                    }
-
-                    override fun onFailure(call: Call<List<MenuItem>>, t: Throwable) {
-                        Log.e(TAG, "MenuItem retrieve error.", t)
-                    }
-                })
+                if (isTouchable) {
+                    fetch()
+                }
             }
         }
     }

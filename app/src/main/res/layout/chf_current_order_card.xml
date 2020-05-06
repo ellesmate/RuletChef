@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/order_item_layout"
-    android:orientation="horizontal"
-    android:layout_margin="4dp"
-    android:background="@android:color/darker_gray"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="24dp"
+    app:cardElevation="8dp">
 
-
-    <ImageView
-        android:id="@+id/order_item_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@drawable/ic_launcher_background" />
 
     <LinearLayout
-        android:layout_margin="4dp"
-        android:orientation="vertical"
+        android:layout_margin="12dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/order_item_type"
+            android:id="@+id/current_order_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textSize="24sp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="10dp"
             android:text="Bonito roll"/>
 
+        <ImageView
+            android:id="@+id/current_order_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
+
         <RelativeLayout
+            android:layout_margin="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/order_item_amount"
+                android:id="@+id/current_order_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -42,21 +42,21 @@
                 android:text="5 items"/>
 
             <TextView
-                android:id="@+id/order_item_time"
+                android:id="@+id/current_order_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:textSize="20sp"
-                android:text="10 min ago" />
+                android:text="10 minutes ago" />
 
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/order_item_wishes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Without cheese"/>
 
+
     </LinearLayout>
 
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

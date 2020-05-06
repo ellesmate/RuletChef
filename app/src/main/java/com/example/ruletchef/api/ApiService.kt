@@ -16,7 +16,7 @@ interface ApiService {
     fun getOrders(
         @Path("entityId") entityId: Int,
         @Header("Authorization") token: String?
-    ) : Call< List<Order> >
+    ) : Call< MutableList<Order> >
 
 //    @GET()
 //    fun getMenuItem(

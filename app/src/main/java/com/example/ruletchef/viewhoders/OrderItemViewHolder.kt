@@ -9,6 +9,8 @@ import kotlinx.android.synthetic.main.chf_order_item.view.*
 
 class OrderItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    var orderItemView: View = itemView
+    var orderItemLayout: View = itemView.findViewById(R.id.order_item_layout)
     var orderItemImage: ImageView = itemView.findViewById(R.id.order_item_image)
     var orderItemType: TextView = itemView.findViewById(R.id.order_item_type)
     var orderItemAmount: TextView = itemView.findViewById(R.id.order_item_amount)
