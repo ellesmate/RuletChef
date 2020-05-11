@@ -1,5 +1,7 @@
 package com.example.ruletchef.api
 
+import com.example.ruletchef.models.Token
+import com.example.ruletchef.repository.Repository
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -12,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitBuilder {
     const val BASE_URL = "http://192.168.1.4:8000/"
 
-    private var token: String? = null
+//    private var token: Token? = null
 //    private val user: User? = null
 
 
@@ -36,7 +38,8 @@ object RetrofitBuilder {
 
     fun newWebSocket(listener: WebSocketListener) : WebSocket {
         val request = Request.Builder()
-            .url(BASE_WS_URL+"ws/group/1/")
+            .url(BASE_WS_URL+"ws/kitchen/")
+            .addHeader("Authorization", Repository.token.value.toString())
             .build()
         return client.newWebSocket(request, listener)
     }

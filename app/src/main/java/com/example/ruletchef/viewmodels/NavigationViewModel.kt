@@ -6,15 +6,9 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.ruletchef.api.RetrofitBuilder
 import com.example.ruletchef.api.WSListener
-import com.example.ruletchef.livedata.OrderLiveData
 import com.example.ruletchef.models.*
 import com.example.ruletchef.repository.Repository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
 import okhttp3.WebSocket
-import okhttp3.WebSocketListener
-import okhttp3.internal.wait
-import retrofit2.Retrofit
 
 class NavigationViewModel : ViewModel() {
     var menu: MutableLiveData<Map<Int, MenuItem>> = Repository.fetchMenuItems()
@@ -95,6 +89,10 @@ class NavigationViewModel : ViewModel() {
     }
 
     fun takeOrderItem(orderItem: OrderItem) {
+        if (orderItem.cook != null && orderItem.cook != Repository.me) {
+            return
+        }
+
         val state: State = if(orderItem.cook == Repository.me) State.DONE else State.COOKING
         val update = Update(orderItem.id, orderItem.orderId, Repository.me, state)
         val message = WSListener.Message(null, update)

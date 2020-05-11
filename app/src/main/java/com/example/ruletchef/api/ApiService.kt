@@ -6,7 +6,7 @@ import retrofit2.http.*
 
 interface ApiService {
     @FormUrlEncoded
-    @POST("account/api-token-auth/")
+    @POST("api-token-auth/")
     fun auth(
         @Field("username") email: String,
         @Field("password") password: String
