@@ -15,7 +15,8 @@ interface ApiService {
     @GET("api/entity/{entityId}/order/")
     fun getOrders(
         @Path("entityId") entityId: Int,
-        @Header("Authorization") token: String?
+        @Header("Authorization") token: String?,
+        @Query("status") status: State
     ) : Call< MutableList<Order> >
 
 //    @GET()
@@ -25,6 +26,13 @@ interface ApiService {
     @GET("api/entity/{entityId}/menuitem/")
     fun getMenuItems(
         @Path("entityId") entityId: Int,
+        @Header("Authorization") token: String?,
+        @Query("category") categoryId: Int? = null
+    ) : Call< MutableList<MenuItem> >
+
+    @GET("api/entity/{entityId}/category/")
+    fun getCategories(
+        @Path("entityId") entityId: Int,
         @Header("Authorization") token: String?
-    ) : Call< List<MenuItem> >
+    ) : Call< MutableList<Category> >
 }

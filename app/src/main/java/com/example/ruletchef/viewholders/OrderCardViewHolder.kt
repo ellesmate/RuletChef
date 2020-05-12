@@ -1,4 +1,4 @@
-package com.example.ruletchef.viewhoders
+package com.example.ruletchef.viewholders
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

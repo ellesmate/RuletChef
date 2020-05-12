@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.ruletchef.waiter.WaiterNavigationFragment
 import kotlinx.android.synthetic.main.wrk_choose_role.view.*
 
 
@@ -24,11 +25,11 @@ class ChooseRoleFragment : Fragment() {
             (activity as NavigationHost).navigateTo(NavigationFragment(), false)
         }
 
-        view.wrk_courier_textview.setOnClickListener {
-
+        view.wrk_waiter_textview.setOnClickListener {
+            (activity as NavigationHost).navigateTo(WaiterNavigationFragment(), false)
         }
 
-        view.wrk_waiter_textview.setOnClickListener {
+        view.wrk_courier_textview.setOnClickListener {
 
         }
 

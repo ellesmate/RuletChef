@@ -11,10 +11,10 @@ import com.example.ruletchef.repository.Repository
 import okhttp3.WebSocket
 
 class NavigationViewModel : ViewModel() {
-    var menu: MutableLiveData<Map<Int, MenuItem>> = Repository.fetchMenuItems()
+    var menu: MutableLiveData<Map<Int, MenuItem>> = Repository.fetchMenuMap()
     var orders: MutableLiveData<MutableList<Order>> = Transformations
         .switchMap(menu) {
-            Repository.fetchOrders(it)
+            Repository.fetchOrders(it, State.NEW)
         } as MutableLiveData<MutableList<Order>>
 
     var currentOrders: LiveData<MutableList<OrderItem>> = Transformations
@@ -102,7 +102,7 @@ class NavigationViewModel : ViewModel() {
 
 
     fun getMenu() {
-        menu = Repository.fetchMenuItems()
+        menu = Repository.fetchMenuMap()
     }
 
     var ws: WebSocket = RetrofitBuilder.newWebSocket(WSListener(this))

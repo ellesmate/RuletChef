@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wtr_menu_sheet"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="20dp"
+    app:behavior_skipCollapsed="false"
+    android:elevation="20dp"
+    android:background="@color/colorPrimaryDark"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/wtr_menu_item_recycler_view"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.core.widget.NestedScrollView>
+
+<!--    <TextView-->
+<!--        android:textSize="30sp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Hello"/>-->
+
+<!--    <TextView-->
+<!--        android:textSize="30sp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="WOrld"/>-->
+<!--    <TextView-->
+<!--        android:textSize="30sp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Kirill"/>-->
+
+
+</LinearLayout>

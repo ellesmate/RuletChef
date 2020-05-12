@@ -19,6 +19,17 @@ data class MenuItem (
 
     @Expose
     @SerializedName("item_type")
-    val type: String
+    val type: String,
 
+    @SerializedName("price")
+    val price: Int,
+
+    @SerializedName("available")
+    val available: Boolean,
+
+    @SerializedName("category")
+    val categoryId: Int,
+
+    @SerializedName("entity")
+    val entityId: Int
 )

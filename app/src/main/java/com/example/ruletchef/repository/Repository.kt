@@ -63,7 +63,7 @@ object Repository {
         }
     }
 
-    fun fetchOrders(menuItemMap: Map<Int, MenuItem>) : LiveData<MutableList<Order>> {
+    fun fetchOrders(menuItemMap: Map<Int, MenuItem>, status: State) : LiveData<MutableList<Order>> {
 //        return OrderLiveData(menuItemMap)
         return object : MutableLiveData<MutableList<Order>>() {
             var isTouchable: Boolean = true
@@ -71,7 +71,7 @@ object Repository {
             fun fetch() {
                 Log.d("NavigationFragment", "Start Load")
                 Log.d("NavigationFragment", this.hashCode().toString())
-                RetrofitBuilder.apiService.getOrders(1, Repository.token.value?.toString())
+                RetrofitBuilder.apiService.getOrders(1, Repository.token.value?.toString(), status)
                     .enqueue(object: Callback<MutableList<Order>> {
                         override fun onResponse(
                             call: Call<MutableList<Order>>,
@@ -142,14 +142,14 @@ object Repository {
     }
 
 
-    fun fetchMenuItems(): MutableLiveData<Map<Int, MenuItem>> {
+    fun fetchMenuMap(): MutableLiveData<Map<Int, MenuItem>> {
         return object: MutableLiveData<Map<Int, MenuItem>>() {
             fun fetch() {
                 RetrofitBuilder.apiService.getMenuItems(1, token.value?.toString())
-                    .enqueue(object: Callback< List<MenuItem>> {
+                    .enqueue(object: Callback< MutableList<MenuItem>> {
                         override fun onResponse(
-                            call: Call<List<MenuItem>>,
-                            response: Response<List<MenuItem>>
+                            call: Call<MutableList<MenuItem>>,
+                            response: Response<MutableList<MenuItem>>
                         ) {
                             if (response.isSuccessful) {
                                 val map = mutableMapOf<Int, MenuItem>()
@@ -164,7 +164,7 @@ object Repository {
                             }
                         }
 
-                        override fun onFailure(call: Call<List<MenuItem>>, t: Throwable) {
+                        override fun onFailure(call: Call<MutableList<MenuItem>>, t: Throwable) {
                             Log.e(TAG, "MenuItem retrieve error.", t)
                         }
                     })
@@ -182,6 +182,84 @@ object Repository {
                 }
             }
         }
+    }
+
+    fun fetchCategories(): MutableLiveData<List<Category>> {
+        return object: MutableLiveData<List<Category>>() {
+            fun fetch() {
+                RetrofitBuilder.apiService.getCategories(1, token.value?.toString())
+                    .enqueue(object: Callback< MutableList<Category> > {
+                        override fun onResponse(
+                            call: Call<MutableList<Category>>,
+                            response: Response<MutableList<Category>>
+                        ) {
+                            if (response.isSuccessful) {
+                               value = response.body()
+                            } else {
+                                handleResponseCode(response.code())
+                            }
+                        }
+
+                        override fun onFailure(call: Call<MutableList<Category>>, t: Throwable) {
+                            Log.e(TAG, "Category retrieve error.", t)
+                        }
+                    })
+
+            }
+
+            var isTouchable = true
+
+            override fun onActive() {
+                super.onActive()
+                if (value == null) {
+                    isTouchable = true
+                }
+
+                if (isTouchable) {
+                    fetch()
+                }
+            }
+        }
+    }
+
+    fun fetchMenuItems(category: Category) : LiveData<MutableList<MenuItem>> {
+        return object : MutableLiveData<MutableList<MenuItem>>() {
+            fun fetch() {
+                RetrofitBuilder.apiService.getMenuItems(1, token.value?.toString(), category.id)
+                    .enqueue(object: Callback< MutableList<MenuItem> > {
+                        override fun onResponse(
+                            call: Call<MutableList<MenuItem>>,
+                            response: Response<MutableList<MenuItem>>
+                        ) {
+                            if (response.isSuccessful) {
+                                value = response.body()
+                            } else {
+                                handleResponseCode(response.code())
+                            }
+                        }
+
+                        override fun onFailure(call: Call<MutableList<MenuItem>>, t: Throwable) {
+                            Log.e(TAG, "MenuItem retrieve error.", t)
+                        }
+                    })
+
+            }
+
+            var isTouchable = true
+
+            override fun onActive() {
+                super.onActive()
+
+                if (value == null) {
+                    isTouchable = true
+                }
+
+                if (isTouchable) {
+                    fetch()
+                }
+            }
+        }
+
     }
 
 

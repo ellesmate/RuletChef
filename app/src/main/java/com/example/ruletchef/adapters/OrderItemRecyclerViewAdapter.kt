@@ -1,15 +1,13 @@
 package com.example.ruletchef.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruletchef.R
 import com.example.ruletchef.models.OrderItem
 import com.example.ruletchef.models.State
 import com.example.ruletchef.repository.Repository
-import com.example.ruletchef.viewhoders.OrderItemViewHolder
+import com.example.ruletchef.viewholders.OrderItemViewHolder
 import com.example.ruletchef.viewmodels.NavigationViewModel
 import com.squareup.picasso.Picasso
 

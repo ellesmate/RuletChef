@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruletchef.R
 import com.example.ruletchef.models.OrderItem
-import com.example.ruletchef.viewhoders.CurrentOrderItemCardViewHolder
-import com.example.ruletchef.viewhoders.OrderItemViewHolder
+import com.example.ruletchef.viewholders.CurrentOrderItemCardViewHolder
 import com.example.ruletchef.viewmodels.NavigationViewModel
 import com.squareup.picasso.Picasso
 

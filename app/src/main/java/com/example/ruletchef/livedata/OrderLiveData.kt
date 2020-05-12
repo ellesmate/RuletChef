@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.ruletchef.api.RetrofitBuilder
 import com.example.ruletchef.models.MenuItem
 import com.example.ruletchef.models.Order
+import com.example.ruletchef.models.State
 import com.example.ruletchef.repository.Repository
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,7 +25,7 @@ import retrofit2.Response
 //    }
 //}
 
-class OrderLiveData(val menuItemMap: Map<Int, MenuItem>) : MediatorLiveData<MutableList<Order>>(){
+class OrderLiveData(val menuItemMap: Map<Int, MenuItem>, val status: State) : MediatorLiveData<MutableList<Order>>(){
     private val TAG: String = "OrderLiveData"
 
     var isTouchable: Boolean = true
@@ -32,7 +33,7 @@ class OrderLiveData(val menuItemMap: Map<Int, MenuItem>) : MediatorLiveData<Muta
     fun fetch() {
         Log.d("NavigationFragment", "Start Load")
         Log.d("NavigationFragment", this.hashCode().toString())
-        RetrofitBuilder.apiService.getOrders(1, Repository.token.value?.toString())
+        RetrofitBuilder.apiService.getOrders(1, Repository.token.value?.toString(), status)
             .enqueue(object: Callback<MutableList<Order>> {
                 override fun onResponse(
                     call: Call<MutableList<Order>>,

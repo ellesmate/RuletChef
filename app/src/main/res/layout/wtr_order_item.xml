@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_margin="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/wtr_order_item_image"
+        android:background="@drawable/ic_orders"
+        android:layout_width="120dp"
+        android:layout_height="120dp" />
+
+    <TextView
+        android:id="@+id/wtr_order_item_name"
+        android:text="Burrito"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

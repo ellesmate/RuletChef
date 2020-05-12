@@ -1,11 +1,10 @@
-package com.example.ruletchef.viewhoders
+package com.example.ruletchef.viewholders
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruletchef.R
-import kotlinx.android.synthetic.main.chf_order_item.view.*
 
 class OrderItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

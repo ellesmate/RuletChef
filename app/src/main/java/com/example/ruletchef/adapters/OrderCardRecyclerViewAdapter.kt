@@ -1,14 +1,11 @@
 package com.example.ruletchef.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruletchef.R
 import com.example.ruletchef.models.Order
-import com.example.ruletchef.viewhoders.OrderCardViewHolder
+import com.example.ruletchef.viewholders.OrderCardViewHolder
 import com.example.ruletchef.viewmodels.NavigationViewModel
 
 class OrderCardRecyclerViewAdapter(private val orderList: List<Order>, private val viewModel: NavigationViewModel) : RecyclerView.Adapter<OrderCardViewHolder>() {

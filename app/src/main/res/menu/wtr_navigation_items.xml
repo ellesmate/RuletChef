@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/wtr_action_orders"
+    android:title="Orders"
+    android:icon="@drawable/ic_orders" />
+<item android:id="@+id/wtr_action_menu"
+    android:title="Menu"
+    android:icon="@drawable/ic_menu" />
+<item android:id="@+id/wtr_action_settings"
+    android:title="Settings"
+    android:icon="@drawable/ic_settings" />
+</menu>
