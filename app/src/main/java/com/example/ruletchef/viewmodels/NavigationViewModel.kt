@@ -22,7 +22,7 @@ class NavigationViewModel : ViewModel() {
             val list = mutableListOf<OrderItem>()
             orders.forEach { order ->
                 order.items.forEach { orderItem ->
-                    if (orderItem.cook == Repository.me) {
+                    if (orderItem.cook == Repository.me?.id?:0) {
                         list.add(orderItem)
                     }
                 }
@@ -69,7 +69,7 @@ class NavigationViewModel : ViewModel() {
                                 state = update.state
                             }
 
-                            if (update.state == State.DONE) {
+                            if (update.state == State.DELIVERING) {
                                 if (it.items.size == 1) {
                                     ((it.items) as MutableList<OrderItem>).remove(orderItem)
                                     this.remove(it)
@@ -89,12 +89,17 @@ class NavigationViewModel : ViewModel() {
     }
 
     fun takeOrderItem(orderItem: OrderItem) {
-        if (orderItem.cook != null && orderItem.cook != Repository.me) {
+        val myId = Repository.me?.id
+        if (myId == null) {
+            println("error 'takeOrderItem id is null'")
+            return
+        }
+        if (orderItem.cook != null && orderItem.cook != myId) {
             return
         }
 
-        val state: State = if(orderItem.cook == Repository.me) State.DONE else State.COOKING
-        val update = Update(orderItem.id, orderItem.orderId, Repository.me, state)
+        val state: State = if(orderItem.cook == myId) State.DELIVERING else State.COOKING
+        val update = Update(orderItem.id, orderItem.orderId, myId, state)
         val message = WSListener.Message(null, update)
         val json = RetrofitBuilder.gson.toJson(message)
         ws.send(json)
@@ -105,9 +110,9 @@ class NavigationViewModel : ViewModel() {
         menu = Repository.fetchMenuMap()
     }
 
-    var ws: WebSocket = RetrofitBuilder.newWebSocket(WSListener(this))
+    var ws: WebSocket = RetrofitBuilder.newWebSocket("ws/kitchen/", WSListener(this))
     fun create() {
-        ws = RetrofitBuilder.newWebSocket(WSListener(this))
+        ws = RetrofitBuilder.newWebSocket("ws/kitchen/",WSListener(this))
     }
 
 }

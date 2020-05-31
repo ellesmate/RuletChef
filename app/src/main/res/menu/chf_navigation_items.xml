@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/action_search"
-        android:title="search"
-        android:icon="@drawable/abc_vector_test" />
+        android:title="Orders"
+        android:icon="@drawable/ic_orders" />
     <item android:id="@+id/action_settings"
-        android:title="settings"
-        android:icon="@drawable/abc_vector_test" />
+        android:title="List"
+        android:icon="@drawable/ic_list" />
     <item android:id="@+id/action_navigation"
-        android:title="navigation"
-        android:icon="@drawable/ic_launcher_background" />
+        android:title="Settings"
+        android:icon="@drawable/ic_settings" />
 </menu>

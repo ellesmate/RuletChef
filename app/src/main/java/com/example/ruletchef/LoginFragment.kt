@@ -55,6 +55,10 @@ class LoginFragment : Fragment() {
             }
         }
 
+        view.register_button.setOnClickListener {
+            (activity as NavigationHost).navigateTo(RegisterFragment(), true)
+        }
+
         view.password_edit_text.setOnKeyListener { _, _, _ ->
             if (isPasswordValid(password_edit_text.text!!)) {
                 password_text_input.error = null

@@ -14,9 +14,9 @@ data class Order (
     @SerializedName("entity")
     val entity: Int,
 
-    @Expose
+    @Expose(serialize=false, deserialize=true)
     @SerializedName("time")
-    val time: Date,
+    val time: Date?,
 
     @Expose
     @SerializedName("take_out")
@@ -24,7 +24,7 @@ data class Order (
 
     @Expose
     @SerializedName("orderitem_set")
-    val items: List<OrderItem>,
+    val items: MutableList<OrderItem>,
 
     @Expose
     @SerializedName("waiter")
@@ -36,7 +36,11 @@ data class Order (
 
     @Expose
     @SerializedName("address")
-    val address: String
+    val address: String,
+
+    @Expose
+    @SerializedName("status")
+    var state: State
 )
 
 

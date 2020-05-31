@@ -15,12 +15,15 @@ import com.example.ruletchef.waiter.adapter.MenuItemRecyclerViewAdapter
 import com.example.ruletchef.waiter.viewmodels.WaiterNavigationViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.wtr_menu_fragment.view.*
-import kotlinx.android.synthetic.main.wtr_sheet_menu_items.*
 import kotlinx.android.synthetic.main.wtr_sheet_menu_items.view.*
 
 
 class MenuFragment(val viewModel: WaiterNavigationViewModel) : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            super.onCreate(savedInstanceState)
+            return
+        }
         super.onCreate(savedInstanceState)
 
         viewModel.categories.observe(this, Observer {
@@ -31,7 +34,7 @@ class MenuFragment(val viewModel: WaiterNavigationViewModel) : Fragment() {
 
         viewModel.menuItems.observe(this, Observer {
             println(it)
-            val adapter = MenuItemRecyclerViewAdapter(it)
+            val adapter = MenuItemRecyclerViewAdapter(it, viewModel)
             this.view!!.wtr_menu_sheet!!.wtr_menu_item_recycler_view!!.adapter = adapter
         })
 
@@ -54,7 +57,21 @@ class MenuFragment(val viewModel: WaiterNavigationViewModel) : Fragment() {
         view.wtr_category_recycler_view.layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
 
         view.wtr_category_recycler_view.addItemDecoration(GridItemDecoration(30, 26))
+        BottomSheetBehavior.from((view as View).wtr_menu_sheet).state = BottomSheetBehavior.STATE_HIDDEN
+
+        view.wtr_menu_sheet.wtr_menu_item_recycler_view.addItemDecoration(GridItemDecoration(30,26))
 
         return view
+    }
+
+    fun collapseAll() {
+        if (view != null) {
+            BottomSheetBehavior.from((view as View).wtr_menu_sheet).state = BottomSheetBehavior.STATE_HIDDEN
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        collapseAll()
     }
 }

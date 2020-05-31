@@ -3,7 +3,6 @@ package com.example.ruletchef.repository
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.ruletchef.api.RetrofitBuilder
-import com.example.ruletchef.livedata.OrderLiveData
 import com.example.ruletchef.models.*
 import retrofit2.Callback
 import retrofit2.Call
@@ -14,7 +13,49 @@ object Repository {
     private const val TAG: String = "RequestRepository"
 
     var token: MutableLiveData<Token?> = MutableLiveData()
-    val me: Int = 1
+//    val me: MutableLiveData<User?> = Transformations.switchMap(token) {
+//        if (it == null) {
+//            return@switchMap null
+//        }
+//        return@switchMap getMe(it)
+//    } as MutableLiveData<User?>
+    var me: User? = null
+
+    fun getMe(token: Token) {
+
+        RetrofitBuilder.apiService.getMe(token.toString()).enqueue(object: Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+
+                if(response.isSuccessful) {
+                    me = response.body()
+                } else {
+                    handleResponseCode(response.code())
+                    me = null
+                }
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.d(TAG, "getMe onFailure method", t)
+                me = null
+            }
+        })
+    }
+
+    fun register(email: String, username:String, password:String, password2: String) {
+        RetrofitBuilder.apiService.register(email, username, password, password2).enqueue(object: Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                if (response.isSuccessful) {
+
+                } else {
+                    handleResponseCode(response.code())
+                }
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.d(TAG, "Auth onFailure method", t)
+            }
+        })
+    }
 
     fun auth(email: String, password: String) : LiveData<Boolean> {
         return object: LiveData<Boolean>() {
@@ -34,6 +75,7 @@ object Repository {
                                 false -> {
                                     token.postValue(newToken)
                                     value = true
+                                    getMe(newToken)
                                 }
                             }
                         } else {
@@ -260,6 +302,24 @@ object Repository {
             }
         }
 
+    }
+
+    fun createOrder(order: Order) {
+        RetrofitBuilder.apiService.createOrder(order, order.entity, token.value?.toString())
+            .enqueue(object: Callback<Order> {
+                override fun onResponse(call: Call<Order>, response: Response<Order>) {
+                    if (response.isSuccessful) {
+                        println(response.body())
+                    } else {
+                        println(response.message())
+                        handleResponseCode(response.code())
+                    }
+                }
+
+                override fun onFailure(call: Call<Order>, t: Throwable) {
+                    Log.e(TAG, "Create order error.", t)
+                }
+            })
     }
 
 

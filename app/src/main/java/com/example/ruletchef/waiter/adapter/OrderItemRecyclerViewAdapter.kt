@@ -5,11 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ruletchef.R
 import com.example.ruletchef.models.OrderItem
+import com.example.ruletchef.models.State
 import com.example.ruletchef.waiter.viewholders.OrderItemViewHolder
 import com.example.ruletchef.waiter.viewholders.OrderViewHolder
+import com.example.ruletchef.waiter.viewmodels.WaiterNavigationViewModel
 import com.squareup.picasso.Picasso
 
-class OrderItemRecyclerViewAdapter(val orderItemList: List<OrderItem>) : RecyclerView.Adapter<OrderItemViewHolder>() {
+class OrderItemRecyclerViewAdapter(val orderItemList: List<OrderItem>, val viewModel: WaiterNavigationViewModel) : RecyclerView.Adapter<OrderItemViewHolder>() {
     override fun getItemCount(): Int {
         return orderItemList.size
     }
@@ -25,6 +27,15 @@ class OrderItemRecyclerViewAdapter(val orderItemList: List<OrderItem>) : Recycle
             val orderItem = orderItemList[position]
 
             holder.typeTextView.text = orderItem.type
+
+            if (orderItem.state != State.DELIVERING) {
+                holder.view.setBackgroundResource(R.color.colorPrimary)
+            }
+
+
+            holder.view.setOnClickListener {
+                viewModel.deliverOrderItem(orderItem)
+            }
 
             Picasso.get()
                 .load(orderItem.image)

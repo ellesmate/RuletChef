@@ -18,7 +18,7 @@ class OrdersFragment(val viewModel: WaiterNavigationViewModel) : Fragment() {
         super.onCreate(savedInstanceState)
 
         viewModel.orders.observe(this, Observer {
-            val adapter = OrderRecyclerViewAdapter(it)
+            val adapter = OrderRecyclerViewAdapter(it, viewModel)
             this.view?.wtr_orders_recycler_view?.adapter = adapter
         })
     }

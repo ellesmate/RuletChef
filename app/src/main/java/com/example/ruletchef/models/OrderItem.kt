@@ -39,12 +39,27 @@ data class OrderItem (
 
 
 enum class State {
+    @Expose
     @SerializedName("NEW")
     NEW,
+
+    @Expose
     @SerializedName("COO")
     COOKING,
+
+    @Expose
     @SerializedName("DEL")
     DELIVERING,
+
+    @Expose
+    @SerializedName("PAY")
+    PAYING,
+
+    @Expose
     @SerializedName("DON")
-    DONE
+    DONE;
+
+    override fun toString(): String {
+        return super.toString().take(3)
+    }
 }

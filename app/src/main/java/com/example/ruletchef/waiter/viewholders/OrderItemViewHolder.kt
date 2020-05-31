@@ -8,6 +8,7 @@ import com.example.ruletchef.R
 
 class OrderItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
+    var view: View = itemView
     var imageView: ImageView = itemView.findViewById(R.id.wtr_order_item_image)
     var typeTextView: TextView = itemView.findViewById(R.id.wtr_order_item_name)
 }

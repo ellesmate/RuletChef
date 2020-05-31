@@ -30,12 +30,14 @@ class OrderItemRecyclerViewAdapter(private val orderItemList: List<OrderItem>, p
             holder.orderItemWishes.text = item.wishes
             holder.orderItemTime.text = "7 min ago"
 
+            val myId = Repository.me?.id
+
             when(item.state) {
                 State.NEW -> {
                     holder.orderItemLayout.setBackgroundResource(R.color.colorAccent)
                 }
                 State.COOKING -> {
-                    if (item.cook == Repository.me) {
+                    if (item.cook == myId) {
                         holder.orderItemLayout.setBackgroundResource(R.color.design_default_color_primary_variant)
                     } else {
                         holder.orderItemLayout.setBackgroundResource(R.color.design_default_color_secondary)

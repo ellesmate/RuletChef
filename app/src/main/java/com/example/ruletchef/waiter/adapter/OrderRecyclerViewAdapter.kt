@@ -6,9 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ruletchef.R
 import com.example.ruletchef.models.Order
 import com.example.ruletchef.waiter.viewholders.OrderViewHolder
+import com.example.ruletchef.waiter.viewmodels.WaiterNavigationViewModel
 
 
-class OrderRecyclerViewAdapter(private val orderList: List<Order>) : RecyclerView.Adapter<OrderViewHolder>() {
+class OrderRecyclerViewAdapter(private val orderList: List<Order>, val viewModel: WaiterNavigationViewModel) : RecyclerView.Adapter<OrderViewHolder>() {
 
     override fun getItemCount(): Int {
         return orderList.size
@@ -27,9 +28,11 @@ class OrderRecyclerViewAdapter(private val orderList: List<Order>) : RecyclerVie
 
             holder.addressTextView.text = order.address
 
-            println(order.items)
+            holder.payedButton.setOnClickListener {
+                viewModel.payOrder(order)
+            }
 
-            val adapter = OrderItemRecyclerViewAdapter(order.items)
+            val adapter = OrderItemRecyclerViewAdapter(order.items, viewModel)
             holder.recyclerView.adapter = adapter
         }
     }

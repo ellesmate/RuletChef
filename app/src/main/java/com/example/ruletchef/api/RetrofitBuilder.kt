@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitBuilder {
-    const val BASE_URL = "http://192.168.1.4:8000/"
+    const val BASE_URL = "http://192.168.0.93:8000/"
 
 //    private var token: Token? = null
 //    private val user: User? = null
@@ -30,15 +30,15 @@ object RetrofitBuilder {
             .create(ApiService::class.java)
     }
 
-    const val BASE_WS_URL = "ws://192.168.1.4:8000/"
+    const val BASE_WS_URL = "ws://192.168.0.93:8000/"
 
     private val client: OkHttpClient by lazy {
         OkHttpClient()
     }
 
-    fun newWebSocket(listener: WebSocketListener) : WebSocket {
+    fun newWebSocket(url: String, listener: WebSocketListener) : WebSocket {
         val request = Request.Builder()
-            .url(BASE_WS_URL+"ws/kitchen/")
+            .url(BASE_WS_URL+url)
             .addHeader("Authorization", Repository.token.value.toString())
             .build()
         return client.newWebSocket(request, listener)

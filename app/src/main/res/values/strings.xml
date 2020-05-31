@@ -3,8 +3,11 @@
     <string name="chf_app_name">Rulet</string>
 
     <string name="chf_hint_username">Username</string>
+    <string name="chf_hint_email">Email</string>
     <string name="chf_hint_password">Password</string>
+    <string name="chf_hint_confirm_password">Confirm password</string>
     <string name="chf_button_next">Next</string>
     <string name="chf_button_cancel">Cancel</string>
+    <string name="chf_button_register">Sign up</string>
     <string name="chf_error_password">Password must contain at least 8 characters.</string>
 </resources>

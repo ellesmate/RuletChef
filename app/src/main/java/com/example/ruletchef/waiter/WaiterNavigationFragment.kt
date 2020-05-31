@@ -23,6 +23,7 @@ class WaiterNavigationFragment : Fragment() {
 
     var ordersFragment: OrdersFragment? = null
     var menuFragment: MenuFragment? = null
+    var cartFragment: CartFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +33,7 @@ class WaiterNavigationFragment : Fragment() {
         val view = inflater.inflate(R.layout.wtr_navigation_fragment, container, false)
 
         view.wtr_bottom_navigation.setOnNavigationItemSelectedListener {
+            println("select")
 
             var selectedFragment: Fragment? = null
             when(it.itemId) {
@@ -49,7 +51,10 @@ class WaiterNavigationFragment : Fragment() {
                     selectedFragment = menuFragment
                 }
                 R.id.wtr_action_settings -> {
-
+                    if (cartFragment == null) {
+                        cartFragment = CartFragment(viewModel)
+                    }
+                    selectedFragment = cartFragment
                 }
             }
 
@@ -63,7 +68,19 @@ class WaiterNavigationFragment : Fragment() {
             false
         }
 
+
         view.wtr_bottom_navigation.selectedItemId = R.id.wtr_action_orders
+
+        view.wtr_bottom_navigation.setOnNavigationItemReselectedListener {
+            println("reselect")
+            when(it.itemId) {
+                R.id.wtr_action_menu -> {
+                    if (menuFragment != null) {
+                        menuFragment?.collapseAll()
+                    }
+                }
+            }
+        }
 
         return view
     }
